@@ -57,7 +57,8 @@ Choose your method:
 1. pyshacl
 2. pyshacl-rdfs
 3. pyshacl-owl
-4. reshacl 
+4. reshacl
+5. class-reshacl 
 ```
 The experiment will be performed after you have determined the desired method.
   
