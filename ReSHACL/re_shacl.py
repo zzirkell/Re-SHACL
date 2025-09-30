@@ -747,8 +747,36 @@ def merged_graph(
         
     return vg, same_nodes, shape_g # output_shapes
          
-
-            
+def merged_graph_with_metrics(data_graph: GraphLike, shacl_graph: GraphLike, data_graph_format: str, shacl_graph_format: str, collect_metrics: bool=True):
+    """Run the original entity-level Re-SHACL pipeline and attach a tiny metrics dict to the resulting G′.
+    This does *not* instrument internal phases; it gives wall-clock totals + sizes so we can A/B vs class engine.
+    Returns (G′, same_nodes, S′) identical to merged_graph.
+    """
+    import time
+    t0 = time.time()
+    Gp, same_dic, Sp = merged_graph(data_graph, shacl_graph, data_graph_format, shacl_graph_format)
+    t_total = time.time() - t0
+    if collect_metrics:
+        met = {
+            "harvest": {},              # unknown here
+            "schema":  {},              # unknown here
+            "merging": {
+                "same_components": len(same_dic),
+                "subsumed": sum(len(v) for v in same_dic.values())
+            },
+            "gprime":  {
+                "Gprime_triples": len(Gp)
+            },
+            "timing":  {
+                "t_total": t_total
+            }
+        }
+        try:
+            Gp._reshacl_metrics = met
+        except Exception:
+            pass
+    return Gp, same_dic, Sp
+  
             
 # Returns the intermediate graph resulting from the reasoning and its size
 def inter_graph(
