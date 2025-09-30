@@ -7,7 +7,7 @@ from prettytable import PrettyTable
 import numpy as np
 from ReSHACL.re_shacl import merged_graph_with_metrics
 from ReSHACL.re_shacl_class import merged_graph_class
-from ReSHACL.metrics_utils import compute_metrics_dict, save_metrics, summarize_metrics_line
+from metrics_utils import compute_metrics_dict, save_metrics, summarize_metrics_line
 from rdflib.namespace import SH, RDF
 import os
 import logging
